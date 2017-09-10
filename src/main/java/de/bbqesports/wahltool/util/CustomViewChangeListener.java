@@ -1,4 +1,4 @@
-package util;
+package de.bbqesports.wahltool.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.UI;
 
-import service.AuthenticationService;
+import de.bbqesports.wahltool.service.AuthenticationService;
 
 @Component
 public class CustomViewChangeListener implements ViewChangeListener {

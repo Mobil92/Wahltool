@@ -12,7 +12,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import util.CustomViewChangeListener;
+import de.bbqesports.wahltool.util.CustomViewChangeListener;
 
 @Theme("mytheme")
 @Title("BBQ & eSports Malsch e.V.")

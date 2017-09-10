@@ -1,11 +1,11 @@
-package service;
+package de.bbqesports.wahltool.service;
 
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import db.UserRechte;
+import de.bbqesports.wahltool.db.UserRechte;
 
 @Service
 public class AuthenticationService {

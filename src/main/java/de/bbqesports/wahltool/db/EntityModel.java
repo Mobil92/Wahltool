@@ -1,4 +1,4 @@
-package db;
+package de.bbqesports.wahltool.db;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

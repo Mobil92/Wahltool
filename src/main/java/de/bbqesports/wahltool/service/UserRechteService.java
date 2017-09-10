@@ -1,12 +1,12 @@
-package service;
+package de.bbqesports.wahltool.service;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import db.UserRechte;
-import db.UserRechteRepository;
+import de.bbqesports.wahltool.db.UserRechte;
+import de.bbqesports.wahltool.db.UserRechteRepository;
 
 @Service
 public class UserRechteService extends AbstractService<UserRechte, UserRechteRepository> {

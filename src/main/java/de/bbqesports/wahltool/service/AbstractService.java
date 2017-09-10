@@ -1,4 +1,4 @@
-package service;
+package de.bbqesports.wahltool.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import db.EntityModel;
+import de.bbqesports.wahltool.db.EntityModel;
 
 public class AbstractService<E extends EntityModel, R extends JpaRepository<E, Long>> {
 

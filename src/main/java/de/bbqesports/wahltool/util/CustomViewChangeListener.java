@@ -7,6 +7,8 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.UI;
 
 import de.bbqesports.wahltool.service.AuthenticationService;
+import de.bbqesports.wahltool.views.AbstractView;
+import de.bbqesports.wahltool.views.LoginView;
 
 @Component
 public class CustomViewChangeListener implements ViewChangeListener {

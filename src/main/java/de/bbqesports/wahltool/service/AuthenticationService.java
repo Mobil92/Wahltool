@@ -15,7 +15,7 @@ public class AuthenticationService {
 
 	private UserRechte userRecht;
 
-	public boolean login(String bBenutzer, String pw) {
+	public boolean login(String bBenutzer) {
 		Optional<UserRechte> userRechte = userRechteService.findByBBenutzer(bBenutzer);
 
 		if (userRechte.isPresent()) {

@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.spring.annotation.SpringComponent;
 
 import de.bbqesports.wahltool.service.AbstimmungenService;
-import de.bbqesports.wahltool.service.UserRechteService;
+import de.bbqesports.wahltool.service.UserService;
 
 @SpringComponent
 public class TestDaten {
 
 	@Autowired
-	private UserRechteService userRechteService;
+	private UserService userService;
 
 	@Autowired
 	private AbstimmungenService abstimmungenService;
@@ -24,12 +24,12 @@ public class TestDaten {
 	}
 
 	private void setupBenutzer() {
-		if (!userRechteService.findByBBenutzer("1").isPresent()) {
-			userRechteService.save(new UserRechte("1", true));
+		if (!userService.findByBBenutzer("1").isPresent()) {
+			userService.save(new User("1", true));
 		}
 
-		if (!userRechteService.findByBBenutzer("2").isPresent()) {
-			userRechteService.save(new UserRechte("2", false));
+		if (!userService.findByBBenutzer("2").isPresent()) {
+			userService.save(new User("2", false));
 		}
 	}
 
@@ -45,8 +45,8 @@ public class TestDaten {
 	}
 
 	// private void setupWartungen() {
-	// UserRechte userAdmin = userRechteService.findOne(1L).get();
-	// UserRechte userLesen = userRechteService.findOne(2L).get();
+	// User userAdmin = userService.findOne(1L).get();
+	// User userLesen = userService.findOne(2L).get();
 	//
 	// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy
 	// HH:mm");
@@ -185,7 +185,7 @@ public class TestDaten {
 	//
 	// WartungsRolle rolle = new WartungsRolle();
 	// rolle.setName("RolleIS");
-	// Optional<UserRechte> userRechte = new
+	// Optional<User> userRechte = new
 	// BenutzerService().getBenutzerByName("Mustermann");
 	//
 	// if (!userRechte.isPresent()) {

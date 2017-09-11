@@ -11,8 +11,12 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import de.bbqesports.wahltool.db.Abstimmungen;
+import de.bbqesports.wahltool.db.AbstimmungenUser;
+import de.bbqesports.wahltool.db.Stimme;
+import de.bbqesports.wahltool.db.User;
 import de.bbqesports.wahltool.service.AbstimmungenService;
+import de.bbqesports.wahltool.service.AbstimmungenUserService;
+import de.bbqesports.wahltool.service.AuthenticationService;
 
 @SpringView(name = AktuelleView.VIEW_NAME)
 public class AktuelleView extends AbstractView implements View {
@@ -22,9 +26,15 @@ public class AktuelleView extends AbstractView implements View {
 	public static final String VIEW_NAME = "aktuell";
 
 	@Autowired
-	private AbstimmungenService AbstimmungenService;
+	private AbstimmungenUserService abstimmungenUserService;
 
-	private Abstimmungen abstimmungen;
+	@Autowired
+	private AbstimmungenService abstimmungenService;
+
+	@Autowired
+	private AuthenticationService authenticationService;
+
+	private AbstimmungenUser abstimmungenUser;
 
 	private VerticalLayout layout;
 	private HorizontalLayout buttonLayout = new HorizontalLayout();
@@ -67,7 +77,13 @@ public class AktuelleView extends AbstractView implements View {
 	private Button buttonEnthaltung() {
 		Button button = new Button("Enthaltung");
 		button.addClickListener(event -> {
+			User user = authenticationService.getUser();
+			abstimmungenUser = new AbstimmungenUser();
 
+			abstimmungenUser.setAbstimmungen(abstimmungenService.findAktuelleAbstimmung());
+			abstimmungenUser.setUser(user);
+			abstimmungenUser.setStimme(Stimme.ENTHALTUNG);
+			abstimmungenUserService.save(abstimmungenUser);
 		});
 		return button;
 	}
@@ -75,7 +91,13 @@ public class AktuelleView extends AbstractView implements View {
 	private Button buttonNein() {
 		Button button = new Button("Nein");
 		button.addClickListener(event -> {
+			User user = authenticationService.getUser();
+			abstimmungenUser = new AbstimmungenUser();
 
+			abstimmungenUser.setAbstimmungen(abstimmungenService.findAktuelleAbstimmung());
+			abstimmungenUser.setUser(user);
+			abstimmungenUser.setStimme(Stimme.NEIN);
+			abstimmungenUserService.save(abstimmungenUser);
 		});
 		return button;
 	}
@@ -83,13 +105,19 @@ public class AktuelleView extends AbstractView implements View {
 	private Button buttonJa() {
 		Button button = new Button("Ja");
 		button.addClickListener(event -> {
-			AbstimmungenService.save(abstimmungen);
+			User user = authenticationService.getUser();
+			abstimmungenUser = new AbstimmungenUser();
+
+			abstimmungenUser.setAbstimmungen(abstimmungenService.findAktuelleAbstimmung());
+			abstimmungenUser.setUser(user);
+			abstimmungenUser.setStimme(Stimme.JA);
+			abstimmungenUserService.save(abstimmungenUser);
 		});
 		return button;
 	}
 
 	@Override
 	public void showData() {
-		labelAbstimmung.setValue(AbstimmungenService.findAktuelleAbstimmung());
+		labelAbstimmung.setValue(abstimmungenService.findAktuelleAbstimmungString());
 	}
 }

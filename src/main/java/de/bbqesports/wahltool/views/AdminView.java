@@ -13,7 +13,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
-import de.bbqesports.wahltool.db.UserRechte;
+import de.bbqesports.wahltool.db.User;
 import de.bbqesports.wahltool.service.AuthenticationService;
 
 @SpringView(name = AdminView.VIEW_NAME)
@@ -86,8 +86,8 @@ public class AdminView extends AbstractView {
 	}
 
 	public void enter(ViewChangeEvent event) {
-		UserRechte userRecht = authenticationService.getUserRecht();
-		if (!userRecht.isRechtAdmin()) {
+		User user = authenticationService.getUser();
+		if (!user.isRechtAdmin()) {
 			getUI().getNavigator().navigateTo(AktuelleView.VIEW_NAME);
 			Notification.show("Keine Berechtigung vorhanden!");
 		}

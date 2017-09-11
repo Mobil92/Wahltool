@@ -5,21 +5,21 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.bbqesports.wahltool.db.UserRechte;
+import de.bbqesports.wahltool.db.User;
 
 @Service
 public class AuthenticationService {
 
 	@Autowired
-	private UserRechteService userRechteService;
+	private UserService userService;
 
-	private UserRechte userRecht;
+	private User user;
 
 	public boolean login(String bBenutzer) {
-		Optional<UserRechte> userRechte = userRechteService.findByBBenutzer(bBenutzer);
+		Optional<User> optionalUser = userService.findByBBenutzer(bBenutzer);
 
-		if (userRechte.isPresent()) {
-			userRecht = userRechte.get();
+		if (optionalUser.isPresent()) {
+			user = optionalUser.get();
 		} else {
 			return false;
 		}
@@ -27,20 +27,20 @@ public class AuthenticationService {
 		return true;
 	}
 
-	public UserRechte getUserRecht() {
-		return userRecht;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserRecht(UserRechte userRecht) {
-		this.userRecht = userRecht;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public boolean isUserLoggedIn() {
-		return userRecht != null;
+		return user != null;
 	}
 
 	public void logout() {
-		userRecht = null;
+		user = null;
 	}
 
 }

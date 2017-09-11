@@ -18,13 +18,13 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import de.bbqesports.wahltool.service.AuthenticationService;
-import de.bbqesports.wahltool.service.UserRechteService;
+import de.bbqesports.wahltool.service.UserService;
 
 @SpringView(name = LoginView.VIEW_NAME)
 public class LoginView extends VerticalLayout implements View {
 
 	@Autowired
-	private UserRechteService userRechteService;
+	private UserService userService;
 
 	@Autowired
 	private AuthenticationService authenticationService;

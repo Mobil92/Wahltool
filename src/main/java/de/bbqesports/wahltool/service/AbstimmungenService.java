@@ -13,6 +13,8 @@ public class AbstimmungenService extends AbstractService<Abstimmungen, Abstimmun
 
 	private String stringAbstimmung;
 
+	private Abstimmungen abstimmungen;
+
 	public Optional<Abstimmungen> findById(long id) {
 		return Optional.ofNullable(repository.findById(id));
 	}
@@ -28,10 +30,17 @@ public class AbstimmungenService extends AbstractService<Abstimmungen, Abstimmun
 		});
 	}
 
-	public String findAktuelleAbstimmung() {
+	public String findAktuelleAbstimmungString() {
 		repository.findAll().stream().filter(w -> w.isAktuell()).forEach(abstimmung -> {
 			stringAbstimmung = abstimmung.getAbstimmungsText();
 		});
 		return stringAbstimmung;
+	}
+
+	public Abstimmungen findAktuelleAbstimmung() {
+		repository.findAll().stream().filter(w -> w.isAktuell()).forEach(abstimmung -> {
+			abstimmungen = abstimmung;
+		});
+		return abstimmungen;
 	}
 }

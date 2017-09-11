@@ -1,10 +1,11 @@
 package de.bbqesports.wahltool.db;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -16,19 +17,8 @@ public class Abstimmungen extends EntityModel {
 
 	private boolean aktuell;
 
-	// @Enumerated(EnumType.STRING)
-	// private Stimme stimme;
-	//
-	// public Stimme getStimme() {
-	// return stimme;
-	// }
-	//
-	// public void setStimme(Stimme stimme) {
-	// this.stimme = stimme;
-	// }
-
-	@ManyToMany(mappedBy = "abstimmungen")
-	private Set<UserRechte> userRechte;
+	@OneToMany(mappedBy = "abstimmungen")
+	private Set<AbstimmungenUser> abstimmungenUser = new HashSet<AbstimmungenUser>();
 
 	public Abstimmungen(String abstimmungsText, boolean aktuell) {
 		super();

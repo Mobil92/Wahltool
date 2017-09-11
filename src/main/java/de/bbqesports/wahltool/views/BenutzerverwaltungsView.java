@@ -22,16 +22,16 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import de.bbqesports.wahltool.db.UserRechte;
-import de.bbqesports.wahltool.service.UserRechteService;
+import de.bbqesports.wahltool.db.User;
+import de.bbqesports.wahltool.service.UserService;
 
 @SpringComponent
 public class BenutzerverwaltungsView extends VerticalLayout {
 
 	@Autowired
-	private UserRechteService userRechteService;
+	private UserService userService;
 
-	private Binder<UserRechte> binder = new Binder<>(UserRechte.class);
+	private Binder<User> binder = new Binder<>(User.class);
 
 	private static final long serialVersionUID = 6262108962247877283L;
 
@@ -39,7 +39,7 @@ public class BenutzerverwaltungsView extends VerticalLayout {
 	private Button saveUserButton;
 	private Button deleteUserButton;
 	private Label labelEditUser;
-	private Grid<UserRechte> gridUserRechte = new Grid<>();
+	private Grid<User> gridUserRechte = new Grid<>();
 	private VerticalLayout layoutEditUser;
 
 	@PostConstruct
@@ -63,14 +63,14 @@ public class BenutzerverwaltungsView extends VerticalLayout {
 
 		layoutContent.addComponent(layoutEditUser);
 
-		gridUserRechte.addColumn(UserRechte::getbBenutzer).setCaption("B-User").setWidth(95);
-		gridUserRechte.addColumn(UserRechte::isRechtAdmin).setCaption("Admin");
+		gridUserRechte.addColumn(User::getbBenutzer).setCaption("B-User").setWidth(95);
+		gridUserRechte.addColumn(User::isRechtAdmin).setCaption("Admin");
 
 		gridUserRechte.setWidth("700px");
 		gridUserRechte.setSelectionMode(SelectionMode.SINGLE);
 
 		gridUserRechte.addSelectionListener(event -> {
-			Optional<UserRechte> userRecht = event.getFirstSelectedItem();
+			Optional<User> userRecht = event.getFirstSelectedItem();
 
 			if (userRecht.isPresent()) {
 				binder.setBean(userRecht.get());
@@ -142,8 +142,8 @@ public class BenutzerverwaltungsView extends VerticalLayout {
 		return button;
 	}
 
-	private void saveUser(UserRechte userRecht) {
-		userRechteService.save(userRecht);
+	private void saveUser(User userRecht) {
+		userService.save(userRecht);
 		showData();
 	}
 
@@ -156,7 +156,7 @@ public class BenutzerverwaltungsView extends VerticalLayout {
 		button.addClickListener(event -> {
 			layoutEditUser.setVisible(true);
 			labelEditUser.setValue("Erstellen");
-			binder.setBean(new UserRechte());
+			binder.setBean(new User());
 			saveUserButton.setCaption("Benuter erstellen!");
 			deleteUserButton.setVisible(false);
 
@@ -179,7 +179,7 @@ public class BenutzerverwaltungsView extends VerticalLayout {
 
 	}
 
-	public void confirm(UserRechte userRecht) {
+	public void confirm(User userRecht) {
 		ConfirmDialog.show(UI.getCurrent(), "Bitte bestätigen:",
 				"Möchten Sie wirklich den Benutzer " + userRecht.getbBenutzer() + " löschen?", "Ja", "Abbrechen",
 				new ConfirmDialog.Listener() {
@@ -196,11 +196,11 @@ public class BenutzerverwaltungsView extends VerticalLayout {
 
 	public void showData() {
 		layoutEditUser.setVisible(false);
-		gridUserRechte.setItems(userRechteService.findAll());
+		gridUserRechte.setItems(userService.findAll());
 	}
 
-	private void deleteUser(UserRechte userRecht) {
-		userRechteService.delete(userRecht);
+	private void deleteUser(User userRecht) {
+		userService.delete(userRecht);
 		showData();
 	}
 

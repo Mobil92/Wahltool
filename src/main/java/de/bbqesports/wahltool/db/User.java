@@ -1,39 +1,37 @@
 package de.bbqesports.wahltool.db;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "UserRechte", uniqueConstraints = @UniqueConstraint(columnNames = { "bBenutzer" }))
-public class UserRechte extends EntityModel {
+@Table(name = "User", uniqueConstraints = @UniqueConstraint(columnNames = { "bBenutzer" }))
+public class User extends EntityModel {
 
 	private String bBenutzer;
 
 	private boolean rechtAdmin;
 
-	@ManyToMany
-	@JoinTable(name = "USER_ABSTIMMUNGEN", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "ABSTIMMUNG_ID", referencedColumnName = "id"))
-	private Set<Abstimmungen> abstimmungen;
+	@OneToMany(mappedBy = "user")
+	private Set<AbstimmungenUser> abstimmungenUser = new HashSet<AbstimmungenUser>();
 
-	public UserRechte(String bBenutzer, boolean rechtAdmin) {
+	public User(String bBenutzer, boolean rechtAdmin) {
 		super();
 		this.bBenutzer = bBenutzer;
 		this.rechtAdmin = rechtAdmin;
 	}
 
-	public UserRechte(String bBenutzer) {
+	public User(String bBenutzer) {
 		super();
 		this.bBenutzer = bBenutzer;
 
 	}
 
-	public UserRechte() {
+	public User() {
 	}
 
 	public String getbBenutzer() {
@@ -68,7 +66,7 @@ public class UserRechte extends EntityModel {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserRechte other = (UserRechte) obj;
+		User other = (User) obj;
 		if (bBenutzer == null) {
 			if (other.bBenutzer != null)
 				return false;

@@ -33,6 +33,8 @@ public abstract class AbstractView extends VerticalLayout implements View {
 		navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
 		navigationBar.addComponent(createNavigationButton("Aktuelle Abstimmung", AktuelleView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Auswertung", AuswertungView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Administration", AdminView.VIEW_NAME));
 		navigationBar.addComponent(createLogoutButton());
 
 		content = new Panel();

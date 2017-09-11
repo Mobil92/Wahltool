@@ -1,6 +1,11 @@
 package de.bbqesports.wahltool.db;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -12,13 +17,13 @@ public class UserRechte extends EntityModel {
 
 	private boolean rechtAdmin;
 
-	// @OneToMany
-	// @JoinColumn(name = "userRechte")
-	// private Set<Wartung> wartungen;
+	@ManyToMany
+	@JoinTable(name = "USER_ABSTIMMUNGEN", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "ABSTIMMUNG_ID", referencedColumnName = "id"))
+	private Set<Abstimmungen> abstimmungen;
 
 	public UserRechte(String bBenutzer, boolean rechtAdmin) {
 		super();
-
+		this.bBenutzer = bBenutzer;
 		this.rechtAdmin = rechtAdmin;
 	}
 
@@ -31,11 +36,11 @@ public class UserRechte extends EntityModel {
 	public UserRechte() {
 	}
 
-	public String getBBenutzer() {
+	public String getbBenutzer() {
 		return bBenutzer;
 	}
 
-	public void setBBenutzer(String bBenutzer) {
+	public void setbBenutzer(String bBenutzer) {
 		this.bBenutzer = bBenutzer;
 	}
 

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
 
+import de.bbqesports.wahltool.service.AbstimmungenService;
 import de.bbqesports.wahltool.service.UserRechteService;
 
 @SpringComponent
@@ -12,13 +13,13 @@ public class TestDaten {
 	@Autowired
 	private UserRechteService userRechteService;
 
-	// @Autowired
-	// private WartungService wartungService;
+	@Autowired
+	private AbstimmungenService abstimmungenService;
 
 	public void setupTestData() {
 
 		setupBenutzer();
-		// setupWartungen();
+		setupAbstimmungen();
 
 	}
 
@@ -30,6 +31,17 @@ public class TestDaten {
 		if (!userRechteService.findByBBenutzer("2").isPresent()) {
 			userRechteService.save(new UserRechte("2", false));
 		}
+	}
+
+	private void setupAbstimmungen() {
+		if (!abstimmungenService.findById(1).isPresent()) {
+			abstimmungenService.save(new Abstimmungen("Hier geht es um die Abstimmung bla bla bla...", false));
+		}
+
+		if (!abstimmungenService.findById(2).isPresent()) {
+			abstimmungenService.save(new Abstimmungen("Hier geht es um eine andere Abstimmung bla bla bla...", true));
+		}
+
 	}
 
 	// private void setupWartungen() {

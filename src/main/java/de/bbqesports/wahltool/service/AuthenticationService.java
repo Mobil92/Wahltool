@@ -5,9 +5,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vaadin.spring.annotation.UIScope;
+
 import de.bbqesports.wahltool.db.User;
 
 @Service
+@UIScope
 public class AuthenticationService {
 
 	@Autowired

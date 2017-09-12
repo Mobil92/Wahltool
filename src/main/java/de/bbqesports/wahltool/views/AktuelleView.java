@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.navigator.View;
 import com.vaadin.server.Responsive;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -20,6 +21,7 @@ import de.bbqesports.wahltool.service.AbstimmungUserService;
 import de.bbqesports.wahltool.service.AuthenticationService;
 
 @SpringView(name = AktuelleView.VIEW_NAME)
+@UIScope
 public class AktuelleView extends AbstractView implements View {
 
 	private static final long serialVersionUID = -2885041735539334138L;

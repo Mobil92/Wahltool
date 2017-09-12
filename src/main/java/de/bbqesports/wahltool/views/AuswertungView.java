@@ -11,6 +11,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -19,6 +20,7 @@ import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -29,6 +31,7 @@ import de.bbqesports.wahltool.service.AbstimmungUserService;
 import de.bbqesports.wahltool.service.AuthenticationService;
 
 @SpringView(name = AuswertungView.VIEW_NAME)
+@UIScope
 public class AuswertungView extends AbstractView implements View {
 
 	private static final long serialVersionUID = 5398224081261741956L;
@@ -41,7 +44,6 @@ public class AuswertungView extends AbstractView implements View {
 
 	public static final String VIEW_NAME = "auswertung";
 
-	// private Button saveAbstimmungUserButton;
 	private Button deleteAbstimmungUserButton;
 	private Label labelEditAbstimmungUser;
 	private VerticalLayout layoutEditAbstimmungUser;
@@ -85,7 +87,6 @@ public class AuswertungView extends AbstractView implements View {
 			if (abstimmungUser.isPresent()) {
 				binder.setBean(abstimmungUser.get());
 				labelEditAbstimmungUser.setValue("Bearbeiten");
-				// saveAbstimmungUserButton.setCaption("AbstimmungUser bearbeiten!");
 				layoutEditAbstimmungUser.setVisible(true);
 				deleteAbstimmungUserButton.setVisible(true);
 			} else {
@@ -114,15 +115,11 @@ public class AuswertungView extends AbstractView implements View {
 		deleteAbstimmungUserButton = deleteAbstimmungUserButton();
 		deleteAbstimmungUserButton.setStyleName("danger");
 
-		// saveAbstimmungUserButton = saveAbstimmungUserButton();
-		// saveAbstimmungUserButton.setStyleName("friendly");
-
 		layoutEditAbstimmungUser = new VerticalLayout();
 
 		layoutEditAbstimmungUser.addComponent(labelEditAbstimmungUser);
 		layoutEditAbstimmungUser.addComponent(createTextArea("Abstimmungstext:", "abstimmungString", true));
 
-		// layoutEditAbstimmungUser.addComponent(saveAbstimmungUserButton);
 		layoutEditAbstimmungUser.addComponent(deleteAbstimmungUserButton);
 	}
 
@@ -138,32 +135,13 @@ public class AuswertungView extends AbstractView implements View {
 		return textArea;
 	}
 
-	private Button saveAbstimmungUserButton() {
-		Button button = new Button();
-		button.addClickListener(event -> {
-			if (validateUserData()) {
-				saveAbstimmungUser(binder.getBean());
-			}
-		});
-		return button;
-	}
-
-	private void saveAbstimmungUser(AbstimmungUser abstimmungUser) {
-		abstimmungUserService.save(abstimmungUser);
-		showData();
-	}
-
-	private boolean validateUserData() {
-		return binder.validate().isOk();
-	}
-
 	private Button deleteAbstimmungUserButton() {
 		Button button = new Button("AbstimmungUser löschen!");
 		button.addClickListener(event -> {
 			if (binder.getBean() != null) {
 				confirm(binder.getBean());
 			} else {
-				Notification.show("Es gibt keine AbstimmungUser zum löschen!");
+				Notification.show("Es gibt keine AbstimmungUser zum löschen!", Type.WARNING_MESSAGE);
 			}
 		});
 
@@ -202,7 +180,7 @@ public class AuswertungView extends AbstractView implements View {
 		User user = authenticationService.getUser();
 		if (!user.isRechtAdmin()) {
 			getUI().getNavigator().navigateTo(AktuelleView.VIEW_NAME);
-			Notification.show("Keine Berechtigung vorhanden!");
+			Notification.show("Keine Berechtigung vorhanden!", Type.WARNING_MESSAGE);
 		}
 	}
 

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.UI;
 
 import de.bbqesports.wahltool.service.AuthenticationService;
@@ -11,6 +12,7 @@ import de.bbqesports.wahltool.views.AbstractView;
 import de.bbqesports.wahltool.views.LoginView;
 
 @Component
+@UIScope
 public class CustomViewChangeListener implements ViewChangeListener {
 
 	private static final long serialVersionUID = 2913785199684905594L;

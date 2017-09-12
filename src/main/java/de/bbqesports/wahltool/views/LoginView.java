@@ -10,23 +10,22 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import de.bbqesports.wahltool.service.AuthenticationService;
-import de.bbqesports.wahltool.service.UserService;
 
 @SpringView(name = LoginView.VIEW_NAME)
+@UIScope
 public class LoginView extends VerticalLayout implements View {
-
-	@Autowired
-	private UserService userService;
 
 	@Autowired
 	private AuthenticationService authenticationService;
@@ -109,7 +108,7 @@ public class LoginView extends VerticalLayout implements View {
 
 	private void checkLogin() {
 		if (username.isEmpty()) {
-			Notification.show("Bitte geben Sie ihre ID ein!");
+			Notification.show("Bitte geben Sie ihre ID ein!", Type.WARNING_MESSAGE);
 		} else {
 
 			if (authenticationService.login(username.getValue())) {
@@ -117,7 +116,7 @@ public class LoginView extends VerticalLayout implements View {
 				getUI().getNavigator().navigateTo(AktuelleView.VIEW_NAME);
 
 			} else {
-				Notification.show("Falsche ID");
+				Notification.show("Falsche ID", Type.WARNING_MESSAGE);
 			}
 
 		}

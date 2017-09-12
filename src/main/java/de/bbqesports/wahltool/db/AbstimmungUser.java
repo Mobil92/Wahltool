@@ -6,9 +6,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "AbstimmungUser")
+@Table(name = "AbstimmungUser", uniqueConstraints = @UniqueConstraint(columnNames = { "user", "abstimmung" }))
 public class AbstimmungUser extends EntityModel {
 
 	@ManyToOne

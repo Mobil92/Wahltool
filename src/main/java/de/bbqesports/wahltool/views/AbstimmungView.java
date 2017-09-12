@@ -22,16 +22,16 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import de.bbqesports.wahltool.db.Abstimmungen;
-import de.bbqesports.wahltool.service.AbstimmungenService;
+import de.bbqesports.wahltool.db.Abstimmung;
+import de.bbqesports.wahltool.service.AbstimmungService;
 
 @SpringComponent
-public class AbstimmungsView extends VerticalLayout {
+public class AbstimmungView extends VerticalLayout {
 
 	@Autowired
-	private AbstimmungenService abstimmungenService;
+	private AbstimmungService abstimmungService;
 
-	private Binder<Abstimmungen> binder = new Binder<>(Abstimmungen.class);
+	private Binder<Abstimmung> binder = new Binder<>(Abstimmung.class);
 
 	private static final long serialVersionUID = 6262108962247877283L;
 
@@ -39,7 +39,7 @@ public class AbstimmungsView extends VerticalLayout {
 	private Button saveAbstimmungButton;
 	private Button deleteAbstimmungButton;
 	private Label labelEditAbstimmung;
-	private Grid<Abstimmungen> gridAbstimmungen = new Grid<>();
+	private Grid<Abstimmung> gridAbstimmungen = new Grid<>();
 	private VerticalLayout layoutAbstimmungen;
 
 	@PostConstruct
@@ -63,17 +63,18 @@ public class AbstimmungsView extends VerticalLayout {
 
 		layoutContent.addComponent(layoutAbstimmungen);
 
-		gridAbstimmungen.addColumn(Abstimmungen::getId).setCaption("ID").setWidth(90);
-		gridAbstimmungen.addColumn(Abstimmungen::getAbstimmungsText).setCaption("Abstimmungstext");
+		gridAbstimmungen.addColumn(Abstimmung::getId).setCaption("ID").setWidth(90);
+		gridAbstimmungen.addColumn(Abstimmung::getAbstimmungsText).setCaption("Abstimmungstext")
+				.setDescriptionGenerator(Abstimmung::getAbstimmungsText);
 
 		gridAbstimmungen.setWidth("700px");
 		gridAbstimmungen.setSelectionMode(SelectionMode.SINGLE);
 
 		gridAbstimmungen.addSelectionListener(event -> {
-			Optional<Abstimmungen> abstimmungen = event.getFirstSelectedItem();
+			Optional<Abstimmung> abstimmung = event.getFirstSelectedItem();
 
-			if (abstimmungen.isPresent()) {
-				binder.setBean(abstimmungen.get());
+			if (abstimmung.isPresent()) {
+				binder.setBean(abstimmung.get());
 				labelEditAbstimmung.setValue("Bearbeiten");
 				saveAbstimmungButton.setCaption("Abstimmung bearbeiten!");
 				layoutAbstimmungen.setVisible(true);
@@ -141,11 +142,11 @@ public class AbstimmungsView extends VerticalLayout {
 		return button;
 	}
 
-	private void saveAbstimmung(Abstimmungen abstimmungen) {
-		if (abstimmungen.isAktuell()) {
-			abstimmungenService.setAllInactiv();
+	private void saveAbstimmung(Abstimmung abstimmung) {
+		if (abstimmung.isAktuell()) {
+			abstimmungService.setAllInactiv();
 		}
-		abstimmungenService.save(abstimmungen);
+		abstimmungService.save(abstimmung);
 		showData();
 	}
 
@@ -158,7 +159,7 @@ public class AbstimmungsView extends VerticalLayout {
 		button.addClickListener(event -> {
 			layoutAbstimmungen.setVisible(true);
 			labelEditAbstimmung.setValue("Erstellen");
-			binder.setBean(new Abstimmungen());
+			binder.setBean(new Abstimmung());
 			saveAbstimmungButton.setCaption("Abstimmung erstellen!");
 			deleteAbstimmungButton.setVisible(false);
 
@@ -181,16 +182,16 @@ public class AbstimmungsView extends VerticalLayout {
 
 	}
 
-	public void confirm(Abstimmungen abstimmungen) {
+	public void confirm(Abstimmung abstimmung) {
 		ConfirmDialog.show(UI.getCurrent(), "Bitte bestätigen:",
-				"Möchten Sie wirklich die Abstimmung " + abstimmungen.getId() + " löschen?", "Ja", "Abbrechen",
+				"Möchten Sie wirklich die Abstimmung " + abstimmung.getId() + " löschen?", "Ja", "Abbrechen",
 				new ConfirmDialog.Listener() {
 
 					private static final long serialVersionUID = -6961205435514925228L;
 
 					public void onClose(ConfirmDialog dialog) {
 						if (dialog.isConfirmed()) {
-							deleteAbstimmung(abstimmungen);
+							deleteAbstimmung(abstimmung);
 						}
 					}
 				});
@@ -198,11 +199,11 @@ public class AbstimmungsView extends VerticalLayout {
 
 	public void showData() {
 		layoutAbstimmungen.setVisible(false);
-		gridAbstimmungen.setItems(abstimmungenService.findAll());
+		gridAbstimmungen.setItems(abstimmungService.findAll());
 	}
 
-	private void deleteAbstimmung(Abstimmungen abstimmungen) {
-		abstimmungenService.delete(abstimmungen);
+	private void deleteAbstimmung(Abstimmung abstimmung) {
+		abstimmungService.delete(abstimmung);
 		showData();
 	}
 

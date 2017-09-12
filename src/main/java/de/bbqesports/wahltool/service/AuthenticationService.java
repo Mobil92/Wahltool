@@ -16,7 +16,7 @@ public class AuthenticationService {
 	private User user;
 
 	public boolean login(String bBenutzer) {
-		Optional<User> optionalUser = userService.findByBBenutzer(bBenutzer);
+		Optional<User> optionalUser = userService.findByUserName(bBenutzer);
 
 		if (optionalUser.isPresent()) {
 			user = optionalUser.get();

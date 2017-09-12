@@ -63,7 +63,7 @@ public class BenutzerverwaltungsView extends VerticalLayout {
 
 		layoutContent.addComponent(layoutEditUser);
 
-		gridUserRechte.addColumn(User::getbBenutzer).setCaption("B-User").setWidth(95);
+		gridUserRechte.addColumn(User::getUserName).setCaption("B-User").setWidth(95);
 		gridUserRechte.addColumn(User::isRechtAdmin).setCaption("Admin");
 
 		gridUserRechte.setWidth("700px");
@@ -107,7 +107,7 @@ public class BenutzerverwaltungsView extends VerticalLayout {
 		layoutEditUser = new VerticalLayout();
 
 		layoutEditUser.addComponent(labelEditUser);
-		layoutEditUser.addComponent(createTextField("User-ID:", "bBenutzer", true));
+		layoutEditUser.addComponent(createTextField("User-ID:", "userName", true));
 		layoutEditUser.addComponent(new Label("Berechtigung:"));
 		layoutEditUser.addComponent(createCheckBox("Admin", "rechtAdmin"));
 		layoutEditUser.addComponent(saveUserButton);
@@ -181,7 +181,7 @@ public class BenutzerverwaltungsView extends VerticalLayout {
 
 	public void confirm(User userRecht) {
 		ConfirmDialog.show(UI.getCurrent(), "Bitte bestätigen:",
-				"Möchten Sie wirklich den Benutzer " + userRecht.getbBenutzer() + " löschen?", "Ja", "Abbrechen",
+				"Möchten Sie wirklich den Benutzer " + userRecht.getUserName() + " löschen?", "Ja", "Abbrechen",
 				new ConfirmDialog.Listener() {
 
 					private static final long serialVersionUID = -6961205435514925228L;

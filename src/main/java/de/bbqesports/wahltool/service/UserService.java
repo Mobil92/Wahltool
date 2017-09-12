@@ -11,8 +11,8 @@ import de.bbqesports.wahltool.db.UserRepository;
 @Service
 public class UserService extends AbstractService<User, UserRepository> {
 
-	public Optional<User> findByBBenutzer(String bBenutzer) {
-		return Optional.ofNullable(repository.findByBBenutzerIgnoreCase(bBenutzer));
+	public Optional<User> findByUserName(String userName) {
+		return Optional.ofNullable(repository.findByUserNameIgnoreCase(userName));
 	}
 
 	public List<User> findAll() {

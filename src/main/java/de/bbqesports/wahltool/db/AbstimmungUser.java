@@ -8,32 +8,44 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "AbstimmungenUser")
-public class AbstimmungenUser extends EntityModel {
+@Table(name = "AbstimmungUser")
+public class AbstimmungUser extends EntityModel {
 
 	@ManyToOne
 	@JoinColumn(name = "user")
 	private User user;
 
+	@ManyToOne
+	@JoinColumn(name = "abstimmung")
+	private Abstimmung abstimmung;
+
 	public User getUser() {
 		return user;
+	}
+
+	public String getUserString() {
+		return user.getUserName();
 	}
 
 	public void setUser(User user) {
 		this.user = user;
 	}
 
-	public Abstimmungen getAbstimmungen() {
-		return abstimmungen;
+	public Abstimmung getAbstimmungen() {
+		return abstimmung;
 	}
 
-	public void setAbstimmungen(Abstimmungen abstimmungen) {
-		this.abstimmungen = abstimmungen;
+	public long getAbstimmungLong() {
+		return abstimmung.getId();
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "abstimmungen")
-	private Abstimmungen abstimmungen;
+	public String getAbstimmungString() {
+		return abstimmung.getAbstimmungsText();
+	}
+
+	public void setAbstimmungen(Abstimmung abstimmung) {
+		this.abstimmung = abstimmung;
+	}
 
 	@Enumerated(EnumType.STRING)
 	private Stimme stimme;

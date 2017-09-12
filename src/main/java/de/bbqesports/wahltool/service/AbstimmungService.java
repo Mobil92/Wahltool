@@ -5,21 +5,21 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import de.bbqesports.wahltool.db.Abstimmungen;
-import de.bbqesports.wahltool.db.AbstimmungenRepository;
+import de.bbqesports.wahltool.db.Abstimmung;
+import de.bbqesports.wahltool.db.AbstimmungRepository;
 
 @Service
-public class AbstimmungenService extends AbstractService<Abstimmungen, AbstimmungenRepository> {
+public class AbstimmungService extends AbstractService<Abstimmung, AbstimmungRepository> {
 
 	private String stringAbstimmung;
 
-	private Abstimmungen abstimmungen;
+	private Abstimmung abstimmung;
 
-	public Optional<Abstimmungen> findById(long id) {
+	public Optional<Abstimmung> findById(long id) {
 		return Optional.ofNullable(repository.findById(id));
 	}
 
-	public List<Abstimmungen> findAll() {
+	public List<Abstimmung> findAll() {
 		return repository.findAll();
 	}
 
@@ -37,10 +37,10 @@ public class AbstimmungenService extends AbstractService<Abstimmungen, Abstimmun
 		return stringAbstimmung;
 	}
 
-	public Abstimmungen findAktuelleAbstimmung() {
+	public Abstimmung findAktuelleAbstimmung() {
 		repository.findAll().stream().filter(w -> w.isAktuell()).forEach(abstimmung -> {
-			abstimmungen = abstimmung;
+			this.abstimmung = abstimmung;
 		});
-		return abstimmungen;
+		return this.abstimmung;
 	}
 }

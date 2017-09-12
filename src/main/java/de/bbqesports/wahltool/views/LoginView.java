@@ -4,6 +4,8 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -43,6 +45,16 @@ public class LoginView extends VerticalLayout implements View {
 
 		username.setIcon(VaadinIcons.USER);
 		username.setMaxLength(6);
+
+		username.addShortcutListener(new ShortcutListener("Shortcut Name", ShortcutAction.KeyCode.ENTER, null) {
+
+			private static final long serialVersionUID = 689629086267841245L;
+
+			@Override
+			public void handleAction(Object sender, Object target) {
+				checkLogin();
+			}
+		});
 
 		VerticalLayout layout = new VerticalLayout();
 

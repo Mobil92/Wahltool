@@ -29,7 +29,7 @@ public class AdminView extends AbstractView {
 	private BenutzerverwaltungsView benutzerverwaltungsView;
 
 	@Autowired
-	private AbstimmungsView abstimmungsView;
+	private AbstimmungView abstimmungView;
 
 	@Autowired
 	private AuthenticationService authenticationService;
@@ -65,7 +65,7 @@ public class AdminView extends AbstractView {
 
 	public ComboBox<String> createComboBoxAdmin() {
 		ComboBox<String> adminMenu = new ComboBox<>();
-		adminMenu.setItems("Benutzerverwaltung", "Abstimmungen verwalten");
+		adminMenu.setItems("Benutzerverwaltung", "Abstimmung verwalten");
 		adminMenu.setWidth("300px");
 		adminMenu.addSelectionListener(event -> {
 
@@ -73,9 +73,9 @@ public class AdminView extends AbstractView {
 				panelContent.setContent(benutzerverwaltungsView);
 				benutzerverwaltungsView.showData();
 				return;
-			} else if (event.getSelectedItem().get().equals("Abstimmungen verwalten")) {
-				panelContent.setContent(abstimmungsView);
-				abstimmungsView.showData();
+			} else if (event.getSelectedItem().get().equals("Abstimmung verwalten")) {
+				panelContent.setContent(abstimmungView);
+				abstimmungView.showData();
 				return;
 			} else {
 				return;

@@ -4,8 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AbstimmungenRepository extends JpaRepository<Abstimmungen, Long> {
-
-	Abstimmungen findById(long id);
+public interface AbstimmungUserRepository extends JpaRepository<AbstimmungUser, Long> {
 
 }

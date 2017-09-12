@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
 
-import de.bbqesports.wahltool.service.AbstimmungenService;
+import de.bbqesports.wahltool.service.AbstimmungService;
 import de.bbqesports.wahltool.service.UserService;
 
 @SpringComponent
@@ -14,7 +14,7 @@ public class TestDaten {
 	private UserService userService;
 
 	@Autowired
-	private AbstimmungenService abstimmungenService;
+	private AbstimmungService abstimmungService;
 
 	public void setupTestData() {
 
@@ -24,22 +24,22 @@ public class TestDaten {
 	}
 
 	private void setupBenutzer() {
-		if (!userService.findByBBenutzer("1").isPresent()) {
+		if (!userService.findByUserName("1").isPresent()) {
 			userService.save(new User("1", true));
 		}
 
-		if (!userService.findByBBenutzer("2").isPresent()) {
+		if (!userService.findByUserName("2").isPresent()) {
 			userService.save(new User("2", false));
 		}
 	}
 
 	private void setupAbstimmungen() {
-		if (!abstimmungenService.findById(1).isPresent()) {
-			abstimmungenService.save(new Abstimmungen("Hier geht es um die Abstimmung bla bla bla...", false));
+		if (!abstimmungService.findById(1).isPresent()) {
+			abstimmungService.save(new Abstimmung("Hier geht es um die Abstimmung bla bla bla...", false));
 		}
 
-		if (!abstimmungenService.findById(2).isPresent()) {
-			abstimmungenService.save(new Abstimmungen("Hier geht es um eine andere Abstimmung bla bla bla...", true));
+		if (!abstimmungService.findById(2).isPresent()) {
+			abstimmungService.save(new Abstimmung("Hier geht es um eine andere Abstimmung bla bla bla...", true));
 		}
 
 	}

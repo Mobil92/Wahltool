@@ -9,37 +9,37 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "User", uniqueConstraints = @UniqueConstraint(columnNames = { "bBenutzer" }))
+@Table(name = "User", uniqueConstraints = @UniqueConstraint(columnNames = { "userName" }))
 public class User extends EntityModel {
 
-	private String bBenutzer;
+	private String userName;
 
 	private boolean rechtAdmin;
 
 	@OneToMany(mappedBy = "user")
-	private Set<AbstimmungenUser> abstimmungenUser = new HashSet<AbstimmungenUser>();
+	private Set<AbstimmungUser> abstimmungUser = new HashSet<AbstimmungUser>();
 
-	public User(String bBenutzer, boolean rechtAdmin) {
+	public User(String userName, boolean rechtAdmin) {
 		super();
-		this.bBenutzer = bBenutzer;
+		this.userName = userName;
 		this.rechtAdmin = rechtAdmin;
 	}
 
-	public User(String bBenutzer) {
+	public User(String userName) {
 		super();
-		this.bBenutzer = bBenutzer;
+		this.userName = userName;
 
 	}
 
 	public User() {
 	}
 
-	public String getbBenutzer() {
-		return bBenutzer;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setbBenutzer(String bBenutzer) {
-		this.bBenutzer = bBenutzer;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public boolean isRechtAdmin() {
@@ -54,7 +54,7 @@ public class User extends EntityModel {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((bBenutzer == null) ? 0 : bBenutzer.hashCode());
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
 	}
 
@@ -67,10 +67,10 @@ public class User extends EntityModel {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (bBenutzer == null) {
-			if (other.bBenutzer != null)
+		if (userName == null) {
+			if (other.userName != null)
 				return false;
-		} else if (!bBenutzer.equals(other.bBenutzer))
+		} else if (!userName.equals(other.userName))
 			return false;
 		return true;
 	}

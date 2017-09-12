@@ -3,6 +3,7 @@ package de.bbqesports.wahltool.views;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
+import com.vaadin.server.Responsive;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -11,11 +12,11 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import de.bbqesports.wahltool.db.AbstimmungenUser;
+import de.bbqesports.wahltool.db.AbstimmungUser;
 import de.bbqesports.wahltool.db.Stimme;
 import de.bbqesports.wahltool.db.User;
-import de.bbqesports.wahltool.service.AbstimmungenService;
-import de.bbqesports.wahltool.service.AbstimmungenUserService;
+import de.bbqesports.wahltool.service.AbstimmungService;
+import de.bbqesports.wahltool.service.AbstimmungUserService;
 import de.bbqesports.wahltool.service.AuthenticationService;
 
 @SpringView(name = AktuelleView.VIEW_NAME)
@@ -26,15 +27,15 @@ public class AktuelleView extends AbstractView implements View {
 	public static final String VIEW_NAME = "aktuell";
 
 	@Autowired
-	private AbstimmungenUserService abstimmungenUserService;
+	private AbstimmungUserService abstimmungUserService;
 
 	@Autowired
-	private AbstimmungenService abstimmungenService;
+	private AbstimmungService abstimmungService;
 
 	@Autowired
 	private AuthenticationService authenticationService;
 
-	private AbstimmungenUser abstimmungenUser;
+	private AbstimmungUser abstimmungUser;
 
 	private VerticalLayout layout;
 	private HorizontalLayout buttonLayout = new HorizontalLayout();
@@ -71,19 +72,15 @@ public class AktuelleView extends AbstractView implements View {
 		buttonLayout.setComponentAlignment(buttonNein, Alignment.MIDDLE_CENTER);
 		buttonLayout.setComponentAlignment(buttonEnthaltung, Alignment.MIDDLE_CENTER);
 
+		Responsive.makeResponsive(layout);
+
 		return layout;
 	}
 
 	private Button buttonEnthaltung() {
 		Button button = new Button("Enthaltung");
 		button.addClickListener(event -> {
-			User user = authenticationService.getUser();
-			abstimmungenUser = new AbstimmungenUser();
-
-			abstimmungenUser.setAbstimmungen(abstimmungenService.findAktuelleAbstimmung());
-			abstimmungenUser.setUser(user);
-			abstimmungenUser.setStimme(Stimme.ENTHALTUNG);
-			abstimmungenUserService.save(abstimmungenUser);
+			save(Stimme.ENTHALTUNG);
 		});
 		return button;
 	}
@@ -91,13 +88,7 @@ public class AktuelleView extends AbstractView implements View {
 	private Button buttonNein() {
 		Button button = new Button("Nein");
 		button.addClickListener(event -> {
-			User user = authenticationService.getUser();
-			abstimmungenUser = new AbstimmungenUser();
-
-			abstimmungenUser.setAbstimmungen(abstimmungenService.findAktuelleAbstimmung());
-			abstimmungenUser.setUser(user);
-			abstimmungenUser.setStimme(Stimme.NEIN);
-			abstimmungenUserService.save(abstimmungenUser);
+			save(Stimme.NEIN);
 		});
 		return button;
 	}
@@ -105,19 +96,23 @@ public class AktuelleView extends AbstractView implements View {
 	private Button buttonJa() {
 		Button button = new Button("Ja");
 		button.addClickListener(event -> {
-			User user = authenticationService.getUser();
-			abstimmungenUser = new AbstimmungenUser();
-
-			abstimmungenUser.setAbstimmungen(abstimmungenService.findAktuelleAbstimmung());
-			abstimmungenUser.setUser(user);
-			abstimmungenUser.setStimme(Stimme.JA);
-			abstimmungenUserService.save(abstimmungenUser);
+			save(Stimme.JA);
 		});
 		return button;
 	}
 
+	private void save(Stimme stimme) {
+		User user = authenticationService.getUser();
+		abstimmungUser = new AbstimmungUser();
+
+		abstimmungUser.setAbstimmungen(abstimmungService.findAktuelleAbstimmung());
+		abstimmungUser.setUser(user);
+		abstimmungUser.setStimme(stimme);
+		abstimmungUserService.save(abstimmungUser);
+	}
+
 	@Override
 	public void showData() {
-		labelAbstimmung.setValue(abstimmungenService.findAktuelleAbstimmungString());
+		labelAbstimmung.setValue(abstimmungService.findAktuelleAbstimmungString());
 	}
 }

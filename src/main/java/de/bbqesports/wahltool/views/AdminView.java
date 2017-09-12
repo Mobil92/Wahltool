@@ -18,8 +18,8 @@ import com.vaadin.ui.VerticalLayout;
 import de.bbqesports.wahltool.db.User;
 import de.bbqesports.wahltool.service.AuthenticationService;
 
-@SpringView(name = AdminView.VIEW_NAME)
 @UIScope
+@SpringView(name = AdminView.VIEW_NAME)
 public class AdminView extends AbstractView {
 
 	private static final long serialVersionUID = 3682796284271369930L;

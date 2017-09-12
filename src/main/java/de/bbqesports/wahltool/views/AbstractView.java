@@ -11,7 +11,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -57,7 +56,6 @@ public abstract class AbstractView extends VerticalLayout implements View {
 		button.addStyleName(ValoTheme.BUTTON_LARGE);
 		button.addClickListener(event -> {
 			authenticationService.logout();
-			UI.getCurrent().getNavigator().navigateTo("");
 		});
 		return button;
 	}

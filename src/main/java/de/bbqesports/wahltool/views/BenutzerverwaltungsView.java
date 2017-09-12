@@ -27,8 +27,8 @@ import com.vaadin.ui.VerticalLayout;
 import de.bbqesports.wahltool.db.User;
 import de.bbqesports.wahltool.service.UserService;
 
-@SpringComponent
 @UIScope
+@SpringComponent
 public class BenutzerverwaltungsView extends VerticalLayout {
 
 	@Autowired

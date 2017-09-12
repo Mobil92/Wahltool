@@ -30,8 +30,8 @@ import de.bbqesports.wahltool.db.User;
 import de.bbqesports.wahltool.service.AbstimmungUserService;
 import de.bbqesports.wahltool.service.AuthenticationService;
 
-@SpringView(name = AuswertungView.VIEW_NAME)
 @UIScope
+@SpringView(name = AuswertungView.VIEW_NAME)
 public class AuswertungView extends AbstractView implements View {
 
 	private static final long serialVersionUID = 5398224081261741956L;

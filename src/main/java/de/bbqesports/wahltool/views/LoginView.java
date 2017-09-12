@@ -23,8 +23,8 @@ import com.vaadin.ui.VerticalLayout;
 
 import de.bbqesports.wahltool.service.AuthenticationService;
 
-@SpringView(name = LoginView.VIEW_NAME)
 @UIScope
+@SpringView(name = LoginView.VIEW_NAME)
 public class LoginView extends VerticalLayout implements View {
 
 	@Autowired

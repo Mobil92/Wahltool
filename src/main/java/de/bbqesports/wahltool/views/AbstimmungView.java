@@ -27,8 +27,8 @@ import com.vaadin.ui.VerticalLayout;
 import de.bbqesports.wahltool.db.Abstimmung;
 import de.bbqesports.wahltool.service.AbstimmungService;
 
-@SpringComponent
 @UIScope
+@SpringComponent
 public class AbstimmungView extends VerticalLayout {
 
 	@Autowired

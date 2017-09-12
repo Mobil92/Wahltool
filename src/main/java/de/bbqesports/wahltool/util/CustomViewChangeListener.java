@@ -11,8 +11,8 @@ import de.bbqesports.wahltool.service.AuthenticationService;
 import de.bbqesports.wahltool.views.AbstractView;
 import de.bbqesports.wahltool.views.LoginView;
 
-@Component
 @UIScope
+@Component
 public class CustomViewChangeListener implements ViewChangeListener {
 
 	private static final long serialVersionUID = 2913785199684905594L;

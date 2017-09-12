@@ -11,6 +11,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.VerticalLayout;
 
 import de.bbqesports.wahltool.db.AbstimmungUser;
@@ -20,8 +22,8 @@ import de.bbqesports.wahltool.service.AbstimmungService;
 import de.bbqesports.wahltool.service.AbstimmungUserService;
 import de.bbqesports.wahltool.service.AuthenticationService;
 
-@SpringView(name = AktuelleView.VIEW_NAME)
 @UIScope
+@SpringView(name = AktuelleView.VIEW_NAME)
 public class AktuelleView extends AbstractView implements View {
 
 	private static final long serialVersionUID = -2885041735539334138L;
@@ -110,7 +112,10 @@ public class AktuelleView extends AbstractView implements View {
 		abstimmungUser.setAbstimmungen(abstimmungService.findAktuelleAbstimmung());
 		abstimmungUser.setUser(user);
 		abstimmungUser.setStimme(stimme);
-		abstimmungUserService.save(abstimmungUser);
+		if (abstimmungUserService.save(abstimmungUser).isPresent()) {
+			Notification.show("Abgestimmt!", Type.WARNING_MESSAGE);
+		}
+
 	}
 
 	@Override

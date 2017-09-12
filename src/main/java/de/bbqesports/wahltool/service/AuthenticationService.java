@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.ui.UI;
 
 import de.bbqesports.wahltool.db.User;
 
-@Service
 @UIScope
+@Service
 public class AuthenticationService {
 
 	@Autowired
@@ -43,7 +44,8 @@ public class AuthenticationService {
 	}
 
 	public void logout() {
-		user = null;
+		UI.getCurrent().close();
+		UI.getCurrent().getPage().setLocation("");
 	}
 
 }

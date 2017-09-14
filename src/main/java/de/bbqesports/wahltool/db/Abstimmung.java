@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -15,10 +16,18 @@ public class Abstimmung extends EntityModel {
 	@Column(length = 65535)
 	private String abstimmungsText;
 
-	private boolean aktuell;
+	private boolean aktuell = false;
 
-	@OneToMany(mappedBy = "abstimmung")
+	@OneToMany(mappedBy = "abstimmung", fetch = FetchType.EAGER)
 	private Set<AbstimmungUser> abstimmungUser = new HashSet<AbstimmungUser>();
+
+	public Set<AbstimmungUser> getAbstimmungUser() {
+		return abstimmungUser;
+	}
+
+	public void setAbstimmungUser(Set<AbstimmungUser> abstimmungUser) {
+		this.abstimmungUser = abstimmungUser;
+	}
 
 	public Abstimmung(String abstimmungsText, boolean aktuell) {
 		super();

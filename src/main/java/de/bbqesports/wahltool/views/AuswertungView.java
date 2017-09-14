@@ -1,7 +1,5 @@
 package de.bbqesports.wahltool.views;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.dialogs.ConfirmDialog;
 
@@ -25,8 +23,9 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import de.bbqesports.wahltool.db.AbstimmungUser;
+import de.bbqesports.wahltool.db.Auswertung;
 import de.bbqesports.wahltool.db.User;
+import de.bbqesports.wahltool.service.AbstimmungService;
 import de.bbqesports.wahltool.service.AbstimmungUserService;
 import de.bbqesports.wahltool.service.AuthenticationService;
 
@@ -42,15 +41,21 @@ public class AuswertungView extends AbstractView implements View {
 	@Autowired
 	private AbstimmungUserService abstimmungUserService;
 
+	@Autowired
+	private AbstimmungService abstimmungService;
+
+	// @Autowired
+	// private AuswertungsService auswertungsService;
+
 	public static final String VIEW_NAME = "auswertung";
 
 	private Button deleteAbstimmungUserButton;
 	private Label labelEditAbstimmungUser;
 	private VerticalLayout layoutEditAbstimmungUser;
 
-	private Grid<AbstimmungUser> gridAuswertung = new Grid<>();
+	private Grid<Auswertung> gridAuswertung = new Grid<>();
 
-	private Binder<AbstimmungUser> binder = new Binder<>(AbstimmungUser.class);
+	private Binder<Auswertung> binder = new Binder<>(Auswertung.class);
 
 	@Override
 	protected Component createContent() {
@@ -70,30 +75,31 @@ public class AuswertungView extends AbstractView implements View {
 
 		createLayoutEditAbstimmungUser();
 
-		layoutContent.addComponent(layoutEditAbstimmungUser);
+		// layoutContent.addComponent(layoutEditAbstimmungUser);
 
-		gridAuswertung.addColumn(AbstimmungUser::getAbstimmungLong).setCaption("ID").setId("ID");
-		gridAuswertung.addColumn(AbstimmungUser::getAbstimmungString).setCaption("Abstimmung-Text").setId("Text")
-				.setDescriptionGenerator(AbstimmungUser::getAbstimmungString);
+		gridAuswertung.addColumn(Auswertung::getAbstimmungId).setCaption("ID").setId("ID");
+		gridAuswertung.addColumn(Auswertung::getJa).setCaption("Ja");
+		gridAuswertung.addColumn(Auswertung::getNein).setCaption("Nein");
+		gridAuswertung.addColumn(Auswertung::getEnthaltung).setCaption("Enthaltung");
 
 		gridAuswertung.setWidth("700px");
 
 		gridAuswertung.sort("ID", SortDirection.DESCENDING);
 		gridAuswertung.setSelectionMode(SelectionMode.SINGLE);
-
-		gridAuswertung.addSelectionListener(event -> {
-			Optional<AbstimmungUser> abstimmungUser = event.getFirstSelectedItem();
-
-			if (abstimmungUser.isPresent()) {
-				binder.setBean(abstimmungUser.get());
-				labelEditAbstimmungUser.setValue("Bearbeiten");
-				layoutEditAbstimmungUser.setVisible(true);
-				deleteAbstimmungUserButton.setVisible(true);
-			} else {
-				layoutEditAbstimmungUser.setVisible(false);
-			}
-
-		});
+		//
+		// gridAuswertung.addSelectionListener(event -> {
+		// Optional<AbstimmungUser> abstimmungUser = event.getFirstSelectedItem();
+		//
+		// if (abstimmungUser.isPresent()) {
+		// binder.setBean(abstimmungUser.get());
+		// labelEditAbstimmungUser.setValue("Bearbeiten");
+		// layoutEditAbstimmungUser.setVisible(true);
+		// deleteAbstimmungUserButton.setVisible(true);
+		// } else {
+		// layoutEditAbstimmungUser.setVisible(false);
+		// }
+		//
+		// });
 		layout.addComponent(labelTitel);
 
 		layout.addComponent(layoutGridButtons);
@@ -109,18 +115,19 @@ public class AuswertungView extends AbstractView implements View {
 	}
 
 	private void createLayoutEditAbstimmungUser() {
-		labelEditAbstimmungUser = new Label();
-		labelEditAbstimmungUser.addStyleName("h2");
+		// labelEditAbstimmungUser = new Label();
+		// labelEditAbstimmungUser.addStyleName("h2");
 
-		deleteAbstimmungUserButton = deleteAbstimmungUserButton();
-		deleteAbstimmungUserButton.setStyleName("danger");
+		// deleteAbstimmungUserButton = deleteAbstimmungUserButton();
+		// deleteAbstimmungUserButton.setStyleName("danger");
 
-		layoutEditAbstimmungUser = new VerticalLayout();
+		// layoutEditAbstimmungUser = new VerticalLayout();
 
-		layoutEditAbstimmungUser.addComponent(labelEditAbstimmungUser);
-		layoutEditAbstimmungUser.addComponent(createTextArea("Abstimmungstext:", "abstimmungString", true));
+		// layoutEditAbstimmungUser.addComponent(labelEditAbstimmungUser);
+		// layoutEditAbstimmungUser.addComponent(createTextArea("Abstimmungstext:",
+		// "abstimmungString", true));
 
-		layoutEditAbstimmungUser.addComponent(deleteAbstimmungUserButton);
+		// layoutEditAbstimmungUser.addComponent(deleteAbstimmungUserButton);
 	}
 
 	private TextArea createTextArea(String caption, String propertyName, boolean required) {
@@ -149,16 +156,17 @@ public class AuswertungView extends AbstractView implements View {
 
 	}
 
-	public void confirm(AbstimmungUser abstimmungUser) {
+	public void confirm(Auswertung auswertung) {
 		ConfirmDialog.show(UI.getCurrent(), "Bitte bestätigen:",
-				"Möchten Sie wirklich den AbstimmungUser " + abstimmungUser.getId() + " löschen?", "Ja", "Abbrechen",
+				// "Möchten Sie wirklich den AbstimmungUser " + auswertung.getId() + "
+				// löschen?", "Ja", "Abbrechen",
 				new ConfirmDialog.Listener() {
 
 					private static final long serialVersionUID = -6961205435514925228L;
 
 					public void onClose(ConfirmDialog dialog) {
 						if (dialog.isConfirmed()) {
-							deleteAbstimmungUser(abstimmungUser);
+							deleteAbstimmungUser(auswertung);
 						}
 					}
 				});
@@ -166,13 +174,13 @@ public class AuswertungView extends AbstractView implements View {
 
 	@Override
 	public void showData() {
-		layoutEditAbstimmungUser.setVisible(false);
-		gridAuswertung.setItems(abstimmungUserService.findAll());
+		// layoutEditAbstimmungUser.setVisible(false);
+		gridAuswertung.setItems(abstimmungService.findAllAuswertungen());
 
 	}
 
-	private void deleteAbstimmungUser(AbstimmungUser abstimmungUser) {
-		abstimmungUserService.delete(abstimmungUser);
+	private void deleteAbstimmungUser(Auswertung auswertung) {
+		// abstimmungUserService.delete(auswertung);
 		showData();
 	}
 

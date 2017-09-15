@@ -1,9 +1,19 @@
 package de.bbqesports.wahltool.views;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.dialogs.ConfirmDialog;
+import java.util.ArrayList;
+import java.util.Set;
 
-import com.vaadin.data.Binder;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.vaadin.addon.charts.Chart;
+import com.vaadin.addon.charts.model.ChartType;
+import com.vaadin.addon.charts.model.Configuration;
+import com.vaadin.addon.charts.model.ListSeries;
+import com.vaadin.addon.charts.model.PlotOptionsColumn;
+import com.vaadin.addon.charts.model.Series;
+import com.vaadin.addon.charts.model.Tooltip;
+import com.vaadin.addon.charts.model.XAxis;
+import com.vaadin.addon.charts.model.YAxis;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.data.sort.SortDirection;
@@ -11,7 +21,6 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
@@ -19,14 +28,11 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import de.bbqesports.wahltool.db.Auswertung;
 import de.bbqesports.wahltool.db.User;
 import de.bbqesports.wahltool.service.AbstimmungService;
-import de.bbqesports.wahltool.service.AbstimmungUserService;
 import de.bbqesports.wahltool.service.AuthenticationService;
 
 @UIScope
@@ -39,23 +45,18 @@ public class AuswertungView extends AbstractView implements View {
 	private AuthenticationService authenticationService;
 
 	@Autowired
-	private AbstimmungUserService abstimmungUserService;
-
-	@Autowired
 	private AbstimmungService abstimmungService;
-
-	// @Autowired
-	// private AuswertungsService auswertungsService;
 
 	public static final String VIEW_NAME = "auswertung";
 
-	private Button deleteAbstimmungUserButton;
-	private Label labelEditAbstimmungUser;
-	private VerticalLayout layoutEditAbstimmungUser;
-
 	private Grid<Auswertung> gridAuswertung = new Grid<>();
 
-	private Binder<Auswertung> binder = new Binder<>(Auswertung.class);
+	private Chart chart = new Chart(ChartType.COLUMN);
+
+	private int ja;
+	private int nein;
+	private int enthaltung;
+	private String name;
 
 	@Override
 	protected Component createContent() {
@@ -73,10 +74,6 @@ public class AuswertungView extends AbstractView implements View {
 
 		layoutContent.addComponent(gridAuswertung);
 
-		createLayoutEditAbstimmungUser();
-
-		// layoutContent.addComponent(layoutEditAbstimmungUser);
-
 		gridAuswertung.addColumn(Auswertung::getAbstimmungId).setCaption("ID").setId("ID");
 		gridAuswertung.addColumn(Auswertung::getJa).setCaption("Ja");
 		gridAuswertung.addColumn(Auswertung::getNein).setCaption("Nein");
@@ -86,24 +83,24 @@ public class AuswertungView extends AbstractView implements View {
 
 		gridAuswertung.sort("ID", SortDirection.DESCENDING);
 		gridAuswertung.setSelectionMode(SelectionMode.SINGLE);
-		//
-		// gridAuswertung.addSelectionListener(event -> {
-		// Optional<AbstimmungUser> abstimmungUser = event.getFirstSelectedItem();
-		//
-		// if (abstimmungUser.isPresent()) {
-		// binder.setBean(abstimmungUser.get());
-		// labelEditAbstimmungUser.setValue("Bearbeiten");
-		// layoutEditAbstimmungUser.setVisible(true);
-		// deleteAbstimmungUserButton.setVisible(true);
-		// } else {
-		// layoutEditAbstimmungUser.setVisible(false);
-		// }
-		//
-		// });
+
+		gridAuswertung.addSelectionListener(event -> {
+			Set<Auswertung> selected = event.getAllSelectedItems();
+			if (!selected.isEmpty()) {
+
+				ja = selected.stream().findFirst().get().getJa();
+				nein = selected.stream().findFirst().get().getNein();
+				enthaltung = selected.stream().findFirst().get().getEnthaltung();
+				name = Long.toString(selected.stream().findFirst().get().getAbstimmung().getId());
+				createChart(name, ja, nein, enthaltung);
+			}
+		});
 		layout.addComponent(labelTitel);
 
 		layout.addComponent(layoutGridButtons);
 		layout.addComponent(layoutContent);
+
+		layout.addComponent(chart);
 
 		layout.setSpacing(true);
 
@@ -114,74 +111,47 @@ public class AuswertungView extends AbstractView implements View {
 		return layout;
 	}
 
-	private void createLayoutEditAbstimmungUser() {
-		// labelEditAbstimmungUser = new Label();
-		// labelEditAbstimmungUser.addStyleName("h2");
+	private void createChart(String name, int ja, int nein, int enthaltung) {
 
-		// deleteAbstimmungUserButton = deleteAbstimmungUserButton();
-		// deleteAbstimmungUserButton.setStyleName("danger");
+		Configuration conf = chart.getConfiguration();
 
-		// layoutEditAbstimmungUser = new VerticalLayout();
+		conf.removexAxes();
+		conf.removeyAxes();
+		conf.removezAxes();
 
-		// layoutEditAbstimmungUser.addComponent(labelEditAbstimmungUser);
-		// layoutEditAbstimmungUser.addComponent(createTextArea("Abstimmungstext:",
-		// "abstimmungString", true));
+		ArrayList<Series> s = new ArrayList<Series>();
+		chart.getConfiguration().setSeries(s);
+		chart.drawChart();
 
-		// layoutEditAbstimmungUser.addComponent(deleteAbstimmungUserButton);
-	}
+		conf.setTitle("Auswertungen");
 
-	private TextArea createTextArea(String caption, String propertyName, boolean required) {
-		TextArea textArea = new TextArea(caption);
+		XAxis x = new XAxis();
+		x.setCategories("Ja", "Nein", "Enthaltungen");
+		conf.addxAxis(x);
 
-		if (required) {
-			binder.forField(textArea).asRequired("Feld darf nicht leer sein!").bind(propertyName);
-		} else {
-			binder.forField(textArea).bind(propertyName);
-		}
+		YAxis y = new YAxis();
+		y.setMin(0);
+		y.setMinTickInterval(1);
+		y.setTitle("Anzahl der Stimmen");
+		conf.addyAxis(y);
 
-		return textArea;
-	}
+		Tooltip tooltip = new Tooltip();
+		tooltip.setFormatter("this.x +': '+ this.y");
+		conf.setTooltip(tooltip);
 
-	private Button deleteAbstimmungUserButton() {
-		Button button = new Button("AbstimmungUser löschen!");
-		button.addClickListener(event -> {
-			if (binder.getBean() != null) {
-				confirm(binder.getBean());
-			} else {
-				Notification.show("Es gibt keine AbstimmungUser zum löschen!", Type.WARNING_MESSAGE);
-			}
-		});
+		PlotOptionsColumn plot = new PlotOptionsColumn();
+		plot.setPointPadding(0.2);
+		plot.setBorderWidth(0);
 
-		return button;
+		conf.addSeries(new ListSeries("Abstimmungs-ID: " + name, ja, nein, enthaltung));
 
-	}
-
-	public void confirm(Auswertung auswertung) {
-		ConfirmDialog.show(UI.getCurrent(), "Bitte bestätigen:",
-				// "Möchten Sie wirklich den AbstimmungUser " + auswertung.getId() + "
-				// löschen?", "Ja", "Abbrechen",
-				new ConfirmDialog.Listener() {
-
-					private static final long serialVersionUID = -6961205435514925228L;
-
-					public void onClose(ConfirmDialog dialog) {
-						if (dialog.isConfirmed()) {
-							deleteAbstimmungUser(auswertung);
-						}
-					}
-				});
+		chart.drawChart(conf);
 	}
 
 	@Override
 	public void showData() {
-		// layoutEditAbstimmungUser.setVisible(false);
 		gridAuswertung.setItems(abstimmungService.findAllAuswertungen());
 
-	}
-
-	private void deleteAbstimmungUser(Auswertung auswertung) {
-		// abstimmungUserService.delete(auswertung);
-		showData();
 	}
 
 	public void enter(ViewChangeEvent event) {

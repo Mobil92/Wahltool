@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -23,6 +24,7 @@ import de.bbqesports.wahltool.views.LoginView;
 @SpringUI
 @UIScope
 @PreserveOnRefresh
+@Widgetset("AppWidgetset")
 public class WahltoolUI extends UI {
 
 	private static final long serialVersionUID = -298539345657938128L;

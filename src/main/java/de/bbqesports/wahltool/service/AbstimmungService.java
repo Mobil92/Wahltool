@@ -24,7 +24,6 @@ public class AbstimmungService extends AbstractService<Abstimmung, AbstimmungRep
 
 	public List<Auswertung> findAllAuswertungen() {
 		List<Auswertung> auswertungenList = new ArrayList<Auswertung>();
-		List<Abstimmung> abstimmungenList = new ArrayList<Abstimmung>();
 
 		repository.findAll().stream().forEach(abstimmung -> {
 			ja = 0;
@@ -40,9 +39,7 @@ public class AbstimmungService extends AbstractService<Abstimmung, AbstimmungRep
 					enthaltung++;
 				}
 			});
-
-			Auswertung auswertung = new Auswertung(abstimmung, ja, nein, enthaltung);
-			auswertungenList.add(auswertung);
+			auswertungenList.add(new Auswertung(abstimmung, ja, nein, enthaltung));
 		});
 
 		return auswertungenList;

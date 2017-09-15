@@ -42,7 +42,7 @@ public class AbstractService<E extends EntityModel, R extends JpaRepository<E, L
 				String exception = ((DataIntegrityViolationException) ex).getRootCause().getMessage();
 
 				if (exception.contains("Unique index or primary key violation")) {
-					message = "Ein solches Element existiert bereits und kann daher nicht gespeichert werden.";
+					message = "So nicht, nur einmal abstimmen bitte :)";
 				}
 			}
 

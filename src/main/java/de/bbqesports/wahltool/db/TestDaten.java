@@ -35,11 +35,13 @@ public class TestDaten {
 
 	private void setupAbstimmungen() {
 		if (!abstimmungService.findById(1).isPresent()) {
-			abstimmungService.save(new Abstimmung("Hier geht es um die Abstimmung bla bla bla...", false));
+			abstimmungService
+					.save(new Abstimmung("Abstimmung Nr 1", "Hier geht es um die Abstimmung bla bla bla...", false));
 		}
 
 		if (!abstimmungService.findById(2).isPresent()) {
-			abstimmungService.save(new Abstimmung("Hier geht es um eine andere Abstimmung bla bla bla...", true));
+			abstimmungService.save(
+					new Abstimmung("Abstimmung Nr 2", "Hier geht es um eine andere Abstimmung bla bla bla...", true));
 		}
 
 	}

@@ -67,10 +67,13 @@ public class AbstimmungView extends VerticalLayout {
 		layoutContent.addComponent(layoutAbstimmungen);
 
 		gridAbstimmungen.addColumn(Abstimmung::getId).setCaption("ID").setWidth(90);
-		gridAbstimmungen.addColumn(Abstimmung::getAbstimmungsText).setCaption("Abstimmungstext")
+		gridAbstimmungen.addColumn(Abstimmung::getAbstimmungTitel).setCaption("Titel")
+				.setDescriptionGenerator(Abstimmung::getAbstimmungTitel);
+		;
+		gridAbstimmungen.addColumn(Abstimmung::getAbstimmungsText).setCaption("Abstimmungstext").setWidth(600)
 				.setDescriptionGenerator(Abstimmung::getAbstimmungsText);
 
-		gridAbstimmungen.setWidth("700px");
+		gridAbstimmungen.setWidth("1000px");
 		gridAbstimmungen.setSelectionMode(SelectionMode.SINGLE);
 
 		gridAbstimmungen.addSelectionListener(event -> {
@@ -111,7 +114,8 @@ public class AbstimmungView extends VerticalLayout {
 		layoutAbstimmungen = new VerticalLayout();
 
 		layoutAbstimmungen.addComponent(labelEditAbstimmung);
-		layoutAbstimmungen.addComponent(createTextArea("Abstimmungstext", "abstimmungsText", true));
+		layoutAbstimmungen.addComponent(createTextArea("Titel:", "abstimmungTitel", true));
+		layoutAbstimmungen.addComponent(createTextArea("Beschreibung:", "abstimmungsText", true));
 		layoutAbstimmungen.addComponent(createCheckBox("Aktiv", "aktuell"));
 		layoutAbstimmungen.addComponent(saveAbstimmungButton);
 		layoutAbstimmungen.addComponent(deleteAbstimmungButton);

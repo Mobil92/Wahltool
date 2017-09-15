@@ -68,6 +68,7 @@ public class AdminView extends AbstractView {
 
 	public ComboBox<String> createComboBoxAdmin() {
 		ComboBox<String> adminMenu = new ComboBox<>();
+		adminMenu.setEmptySelectionAllowed(false);
 		adminMenu.setItems("Benutzerverwaltung", "Abstimmung verwalten");
 		adminMenu.setWidth("300px");
 		adminMenu.addSelectionListener(event -> {

@@ -16,7 +16,6 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import de.bbqesports.wahltool.util.CustomViewChangeListener;
-import de.bbqesports.wahltool.views.AktuelleView;
 import de.bbqesports.wahltool.views.LoginView;
 
 @Theme("mytheme")
@@ -57,8 +56,6 @@ public class WahltoolUI extends UI {
 
 		navigator.addViewChangeListener(listener);
 		navigator.addView("", loginView);
-
-		navigator.navigateTo(AktuelleView.VIEW_NAME);
 	}
 
 }

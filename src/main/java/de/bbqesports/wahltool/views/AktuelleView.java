@@ -3,6 +3,7 @@ package de.bbqesports.wahltool.views;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
+import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
@@ -46,7 +47,9 @@ public class AktuelleView extends AbstractView implements View {
 	private Button buttonJa;
 	private Button buttonNein;
 	private Button buttonEnthaltung;
-	private Label labelAbstimmung = new Label();
+	private Button buttonRefresh;
+	private Label labelAbstimmungsText = new Label();
+	private Label labelAbstimmungTitel = new Label();
 
 	@Override
 	protected Component createContent() {
@@ -58,10 +61,13 @@ public class AktuelleView extends AbstractView implements View {
 		buttonJa = buttonJa();
 		buttonNein = buttonNein();
 		buttonEnthaltung = buttonEnthaltung();
+		buttonRefresh = buttonRefresh();
 
 		layout = new VerticalLayout();
+		layout.addComponent(buttonRefresh);
 		layout.addComponent(labelTitel);
-		layout.addComponent(labelAbstimmung);
+		layout.addComponent(labelAbstimmungTitel);
+		layout.addComponent(labelAbstimmungsText);
 		buttonLayout.addComponent(buttonJa);
 		buttonLayout.addComponent(buttonNein);
 		buttonLayout.addComponent(buttonEnthaltung);
@@ -70,7 +76,9 @@ public class AktuelleView extends AbstractView implements View {
 		layout.setSpacing(true);
 
 		layout.setComponentAlignment(labelTitel, Alignment.MIDDLE_CENTER);
-		layout.setComponentAlignment(labelAbstimmung, Alignment.MIDDLE_CENTER);
+		layout.setComponentAlignment(buttonRefresh, Alignment.MIDDLE_CENTER);
+		layout.setComponentAlignment(labelAbstimmungTitel, Alignment.MIDDLE_CENTER);
+		layout.setComponentAlignment(labelAbstimmungsText, Alignment.MIDDLE_CENTER);
 		layout.setComponentAlignment(buttonLayout, Alignment.MIDDLE_CENTER);
 		buttonLayout.setComponentAlignment(buttonJa, Alignment.MIDDLE_CENTER);
 		buttonLayout.setComponentAlignment(buttonNein, Alignment.MIDDLE_CENTER);
@@ -105,6 +113,14 @@ public class AktuelleView extends AbstractView implements View {
 		return button;
 	}
 
+	private Button buttonRefresh() {
+		Button button = new Button("Aktualisieren");
+		button.addClickListener(event -> {
+			Page.getCurrent().reload();
+		});
+		return button;
+	}
+
 	private void save(Stimme stimme) {
 		User user = authenticationService.getUser();
 		abstimmungUser = new AbstimmungUser();
@@ -120,6 +136,7 @@ public class AktuelleView extends AbstractView implements View {
 
 	@Override
 	public void showData() {
-		labelAbstimmung.setValue(abstimmungService.findAktuelleAbstimmungString());
+		labelAbstimmungsText.setValue(abstimmungService.findAktuelleAbstimmungsText());
+		labelAbstimmungTitel.setValue(abstimmungService.findAktuelleAbstimmungTitel());
 	}
 }

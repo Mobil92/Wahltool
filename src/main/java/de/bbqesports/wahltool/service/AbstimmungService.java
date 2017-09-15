@@ -60,9 +60,16 @@ public class AbstimmungService extends AbstractService<Abstimmung, AbstimmungRep
 		});
 	}
 
-	public String findAktuelleAbstimmungString() {
+	public String findAktuelleAbstimmungsText() {
 		repository.findAll().stream().filter(w -> w.isAktuell()).forEach(abstimmung -> {
 			stringAbstimmung = abstimmung.getAbstimmungsText();
+		});
+		return stringAbstimmung;
+	}
+
+	public String findAktuelleAbstimmungTitel() {
+		repository.findAll().stream().filter(w -> w.isAktuell()).forEach(abstimmung -> {
+			stringAbstimmung = abstimmung.getAbstimmungTitel();
 		});
 		return stringAbstimmung;
 	}

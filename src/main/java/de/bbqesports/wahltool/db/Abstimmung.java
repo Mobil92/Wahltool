@@ -16,6 +16,8 @@ public class Abstimmung extends EntityModel {
 	@Column(length = 65535)
 	private String abstimmungsText;
 
+	private String abstimmungTitel;
+
 	private boolean aktuell = false;
 
 	@OneToMany(mappedBy = "abstimmung", fetch = FetchType.EAGER)
@@ -29,13 +31,15 @@ public class Abstimmung extends EntityModel {
 		this.abstimmungUser = abstimmungUser;
 	}
 
-	public Abstimmung(String abstimmungsText, boolean aktuell) {
+	public Abstimmung(String abstimmungTitel, String abstimmungsText, boolean aktuell) {
 		super();
+		this.abstimmungTitel = abstimmungTitel;
 		this.abstimmungsText = abstimmungsText;
 		this.aktuell = aktuell;
 	}
 
 	public Abstimmung() {
+		this(null, null, false);
 	}
 
 	public String getAbstimmungsText() {
@@ -52,6 +56,14 @@ public class Abstimmung extends EntityModel {
 
 	public void setAktuell(boolean aktuell) {
 		this.aktuell = aktuell;
+	}
+
+	public String getAbstimmungTitel() {
+		return abstimmungTitel;
+	}
+
+	public void setAbstimmungTitel(String abstimmungTitel) {
+		this.abstimmungTitel = abstimmungTitel;
 	}
 
 }

@@ -50,4 +50,8 @@ public class Auswertung {
 		this.enthaltung = enthaltung;
 	}
 
+	public String getAbstimmungTitel() {
+		return abstimmung.getAbstimmungTitel();
+	}
+
 }

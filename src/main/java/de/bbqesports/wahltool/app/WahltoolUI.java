@@ -15,7 +15,9 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import de.bbqesports.wahltool.service.AuthenticationService;
 import de.bbqesports.wahltool.util.CustomViewChangeListener;
+import de.bbqesports.wahltool.views.AktuelleView;
 import de.bbqesports.wahltool.views.LoginView;
 
 @Theme("mytheme")
@@ -35,12 +37,20 @@ public class WahltoolUI extends UI {
 	CustomViewChangeListener listener;
 
 	@Autowired
+	AuthenticationService authenticationService;
+
+	@Autowired
 	private LoginView loginView;
 
 	public Navigator navigator;
 
+	private String qrcodeId;
+
 	@Override
 	protected void init(VaadinRequest request) {
+
+		qrcodeId = request.getParameter("id");
+
 		final VerticalLayout root = new VerticalLayout();
 		root.setSizeFull();
 		setContent(root);
@@ -56,6 +66,12 @@ public class WahltoolUI extends UI {
 
 		navigator.addViewChangeListener(listener);
 		navigator.addView("", loginView);
+
+		if (qrcodeId != null) {
+			if (authenticationService.login(qrcodeId))
+				;
+			getUI().getNavigator().navigateTo(AktuelleView.VIEW_NAME);
+		}
 	}
 
 }

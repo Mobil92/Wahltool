@@ -14,6 +14,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
 import de.bbqesports.wahltool.db.AbstimmungUser;
@@ -51,6 +52,8 @@ public class AktuelleView extends AbstractView implements View {
 	private Label labelAbstimmungsText = new Label();
 	private Label labelAbstimmungTitel = new Label();
 
+	private Panel paneltext = new Panel();
+
 	@Override
 	protected Component createContent() {
 
@@ -63,11 +66,15 @@ public class AktuelleView extends AbstractView implements View {
 		buttonEnthaltung = buttonEnthaltung();
 		buttonRefresh = buttonRefresh();
 
+		paneltext.setContent(labelAbstimmungsText);
+
+		labelAbstimmungsText.setSizeFull();
+
 		layout = new VerticalLayout();
 		layout.addComponent(buttonRefresh);
 		layout.addComponent(labelTitel);
 		layout.addComponent(labelAbstimmungTitel);
-		layout.addComponent(labelAbstimmungsText);
+		layout.addComponent(paneltext);
 		buttonLayout.addComponent(buttonJa);
 		buttonLayout.addComponent(buttonNein);
 		buttonLayout.addComponent(buttonEnthaltung);
@@ -78,7 +85,7 @@ public class AktuelleView extends AbstractView implements View {
 		layout.setComponentAlignment(labelTitel, Alignment.MIDDLE_CENTER);
 		layout.setComponentAlignment(buttonRefresh, Alignment.MIDDLE_CENTER);
 		layout.setComponentAlignment(labelAbstimmungTitel, Alignment.MIDDLE_CENTER);
-		layout.setComponentAlignment(labelAbstimmungsText, Alignment.MIDDLE_CENTER);
+		layout.setComponentAlignment(paneltext, Alignment.MIDDLE_CENTER);
 		layout.setComponentAlignment(buttonLayout, Alignment.MIDDLE_CENTER);
 		buttonLayout.setComponentAlignment(buttonJa, Alignment.MIDDLE_CENTER);
 		buttonLayout.setComponentAlignment(buttonNein, Alignment.MIDDLE_CENTER);

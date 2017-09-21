@@ -3,7 +3,6 @@ package de.bbqesports.wahltool.views;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
-import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
@@ -123,7 +122,7 @@ public class AktuelleView extends AbstractView implements View {
 	private Button buttonRefresh() {
 		Button button = new Button("Aktualisieren");
 		button.addClickListener(event -> {
-			Page.getCurrent().reload();
+			showData();
 		});
 		return button;
 	}

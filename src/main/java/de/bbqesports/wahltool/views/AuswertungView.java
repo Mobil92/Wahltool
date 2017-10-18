@@ -9,6 +9,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
@@ -43,6 +44,7 @@ public class AuswertungView extends AbstractView implements View {
 	public static final String VIEW_NAME = "auswertung";
 
 	private Grid<Auswertung> gridAuswertung = new Grid<>();
+	private Button buttonRefresh;
 
 	@Override
 	protected Component createContent() {
@@ -52,6 +54,8 @@ public class AuswertungView extends AbstractView implements View {
 
 		VerticalLayout layout = new VerticalLayout();
 		HorizontalLayout layoutContent = new HorizontalLayout();
+		
+		buttonRefresh = buttonRefresh();
 
 		Label labelTitel = new Label("Auswertung");
 
@@ -75,15 +79,26 @@ public class AuswertungView extends AbstractView implements View {
 		gridAuswertung.setSelectionMode(SelectionMode.SINGLE);
 
 		layout.addComponent(labelTitel);
+		
+		layout.addComponent(buttonRefresh);
 
 		layout.addComponent(layoutContent);
 
 		layout.setSpacing(true);
 
 		layout.setComponentAlignment(labelTitel, Alignment.MIDDLE_CENTER);
+		layout.setComponentAlignment(buttonRefresh, Alignment.MIDDLE_CENTER);
 		layout.setComponentAlignment(layoutContent, Alignment.MIDDLE_CENTER);
 
 		return layout;
+	}
+	
+	private Button buttonRefresh() {
+		Button button = new Button("Aktualisieren");
+		button.addClickListener(event -> {
+			showData();
+		});
+		return button;
 	}
 
 	@Override

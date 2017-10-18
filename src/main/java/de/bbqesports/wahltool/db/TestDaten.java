@@ -19,7 +19,7 @@ public class TestDaten {
 	public void setupTestData() {
 
 		setupBenutzer();
-		// setupAbstimmungen();
+		setupAbstimmungen();
 
 	}
 
@@ -33,20 +33,18 @@ public class TestDaten {
 		}
 	}
 
-	// private void setupAbstimmungen() {
-	// if (!abstimmungService.findById(1).isPresent()) {
-	// abstimmungService
-	// .save(new Abstimmung("Abstimmung Nr 1", "Hier geht es um die Abstimmung bla
-	// bla bla...", false));
-	// }
-	//
-	// if (!abstimmungService.findById(2).isPresent()) {
-	// abstimmungService.save(
-	// new Abstimmung("Abstimmung Nr 2", "Hier geht es um eine andere Abstimmung bla
-	// bla bla...", true));
-	// }
+	 private void setupAbstimmungen() {
+	 if (!abstimmungService.findById(1).isPresent()) {
+	 abstimmungService
+	 .save(new Abstimmung("Abstimmung Nr 1", "Hier geht es um die Abstimmung blabla bla...", false));
+	 }
+	
+	 if (!abstimmungService.findById(2).isPresent()) {
+	 abstimmungService.save(
+	 new Abstimmung("Abstimmung Nr 2", "Hier geht es um eine andere Abstimmung blabla bla...", true));
+	 }
 
-	// }
+	 }
 
 	// private void setupWartungen() {
 	// User userAdmin = userService.findOne(1L).get();
